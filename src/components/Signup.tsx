@@ -1,12 +1,18 @@
 import { useState } from "react";
 import supabase from "../helper/supabase";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  //check if user already login, is true go to dashboard
+  if (loading) return <p>Loading...</p>;
+  if (user) return <Navigate to="/dashboard" replace />;
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setMessage("");
